@@ -258,12 +258,8 @@ menu: main
 weight: -290
 ---
 </code></pre></div><h5 id="添加百度统计">添加百度统计</h5>
-<p>在head模板的<code>&lt;/head&gt;</code>标签之前放入百度统计生成的<code>&lt;script&gt;...&lt;/script&gt;</code>代码就行了</p>
-<p>hugo只需要在根目录的文件夹创建和主题同路径同名的文件就可以覆盖并生效，所以不需要修改主题的模板文件</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># minimo主题的head模板文件是这个/themes/minimo/layouts/partials/head/head.html</span>
-$ mkdir -p layouts/partials/head/
-$ cp themes/minimo/layouts/partials/head/head.html layouts/partials/head/head.html
-$ vim layouts/partials/head/head.html
+<p>修改这个模版文件，在<code>&lt;/head&gt;</code>之前放入百度统计生成的<code>&lt;script&gt;...&lt;/script&gt;</code>代码就行了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ vim /themes/minimo/layouts/partials/head/head.html
 </code></pre></div><h3 id="create-new-post">create new post</h3>
 <p>一定要加上.md后缀</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo new posts/first_blog.md
