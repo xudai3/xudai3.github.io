@@ -258,8 +258,12 @@ menu: main
 weight: -290
 ---
 </code></pre></div><h5 id="添加百度统计">添加百度统计</h5>
-<p>修改这个模版文件，在<code>&lt;/head&gt;</code>之前放入百度统计生成的<code>&lt;script&gt;...&lt;/script&gt;</code>代码就行了</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ vim /themes/minimo/layouts/partials/head/head.html
+<p>在head模板的<code>&lt;/head&gt;</code>标签之前放入百度统计生成的<code>&lt;script&gt;...&lt;/script&gt;</code>代码就行了</p>
+<p>hugo只需要在根目录的文件夹创建和主题同路径同名的文件就可以覆盖并生效，所以不需要修改主题的模板文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># minimo主题的head模板文件是这个/themes/minimo/layouts/partials/head/head.html</span>
+$ mkdir -p layouts/partials/head/
+$ cp themes/minimo/layouts/partials/head/head.html layouts/partials/head/head.html
+$ vim layouts/partials/head/head.html
 </code></pre></div><h3 id="create-new-post">create new post</h3>
 <p>一定要加上.md后缀</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo new posts/first_blog.md
@@ -270,15 +274,16 @@ weight: -290
 <p>执行这条指令之后就会生成一个public文件夹，静态的网站就在这里面</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo -D
 </code></pre></div><h3 id="上传到github-pages">上传到Github Pages</h3>
-<h4 id="create-github-repo">create GitHub repo</h4>
+<h4 id="create-github-repo">Create GitHub repo</h4>
 <p>先在GitHub上创建两个repo，一个是github pages的，格式必须是xudai3.github.io这样，另外一个随便取名叫blog</p>
 <p>xudai3.github.io仓库用来存放public文件夹下的静态网站，上传之后就可以访问https://xudai3.github.io了</p>
 <p>而blog仓库可以用来存放这整个的hugo文件夹</p>
-<h4 id="upload">upload</h4>
+<h4 id="upload">Upload</h4>
 <p>可以在hugo项目目录下的.gitignore里把public文件夹忽略掉，然后<code>git submodule add -f git@github.com:xudai3/xudai3.github.io.git public</code>把public作为一个git子模块分开管理</p>
 <p>如果之前生成过public文件夹，执行这个之前要先删除掉public文件夹否则执行不了</p>
 <p>还有因为之前被忽略了，要加上-f强制执行才能执行成功</p>
 <p>之后就按照正常的git上传流程就行了</p>
+<h4 id="travis-ci">Travis-ci</h4>
 
 </div>
 
