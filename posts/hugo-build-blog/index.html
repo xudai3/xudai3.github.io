@@ -2,21 +2,23 @@
 <html lang='en' dir='auto'><head>
   <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<meta name='description' content='使用hugo搭建blog Install MacOS下安装 $ brew install hugo Usage Create New Blog $ hugo new site $your_blog_name Install theme $ cd $your_blog_name $ git init # 作为子模块方便管理和更新 $ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo #  如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty
-[submodule &quot;themes/minimo&quot;] path = themes/minimo url = https://github.com/MunifTanjim/minimo ignore = dirty minimo主题配置 # 如果要使用某个主题，最好使用该主题的example的配置，再在上面进行修改定制 $ cp themes/minimo/exampleSite/config.toml . # staticman是用来给静态网站增加评论功能的，如果要用评论功能需要配置这个 $ cp themes/minimo/exampleSite/staticman.toml . # 为了省事直接把这两个也先copy过来了 $ cp -r themes/minimo/exampleSite/content . $ cp -r themes/minimo/exampleSite/data .'>
+<meta name='description' content='使用hugo搭建blog Install MacOS下安装 $ brew install hugo Usage 新建项目 $ hugo new site $your_blog_name 安装主题 $ cd $your_blog_name $ git init # 作为子模块方便管理和更新 $ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo 如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty，不过hugo只需要在根目录的文件夹创建和主题同路径同名的文件就可以覆盖并生效，所以不需要修改主题的模板文件
+[submodule &quot;themes/minimo&quot;] path = themes/minimo url = https://github.com/MunifTanjim/minimo ignore = dirty minimo主题配置 # 如果要使用某个主题，最好使用该主题的example的配置，再在上面进行修改定制 $ cp themes/minimo/exampleSite/config.toml . # staticman是用来给静态网站增加评论功能的，如果要用评论功能需要配置这个 $ cp themes/minimo/exampleSite/staticman.toml . # 为了省事直接把这两个也先copy过来了 $ cp -r themes/minimo/exampleSite/content . $ cp -r themes/minimo/exampleSite/data . 如果要在上方的菜单栏配置posts/categories/tags，可以在content目录下新建对应文件夹，之后创建一个_index.md的文件，添加下面的内容
+--- date: 2017-09-28T08:00:00&#43;06:00 title: Posts linkTitle: Posts slug: posts menu: main weight: -290 --- 添加百度统计 在head模板的&lt;/head&gt;标签之前放入百度统计生成的&lt;script&gt;.'>
 <meta name='theme-color' content='#ffcd00'>
 
 <meta property='og:title' content='使用hugo搭建blog • xudai&#39;s blog'>
-<meta property='og:description' content='使用hugo搭建blog Install MacOS下安装 $ brew install hugo Usage Create New Blog $ hugo new site $your_blog_name Install theme $ cd $your_blog_name $ git init # 作为子模块方便管理和更新 $ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo #  如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty
-[submodule &quot;themes/minimo&quot;] path = themes/minimo url = https://github.com/MunifTanjim/minimo ignore = dirty minimo主题配置 # 如果要使用某个主题，最好使用该主题的example的配置，再在上面进行修改定制 $ cp themes/minimo/exampleSite/config.toml . # staticman是用来给静态网站增加评论功能的，如果要用评论功能需要配置这个 $ cp themes/minimo/exampleSite/staticman.toml . # 为了省事直接把这两个也先copy过来了 $ cp -r themes/minimo/exampleSite/content . $ cp -r themes/minimo/exampleSite/data .'>
-<meta property='og:url' content='https://xudai3.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BAblog/'>
+<meta property='og:description' content='使用hugo搭建blog Install MacOS下安装 $ brew install hugo Usage 新建项目 $ hugo new site $your_blog_name 安装主题 $ cd $your_blog_name $ git init # 作为子模块方便管理和更新 $ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo 如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty，不过hugo只需要在根目录的文件夹创建和主题同路径同名的文件就可以覆盖并生效，所以不需要修改主题的模板文件
+[submodule &quot;themes/minimo&quot;] path = themes/minimo url = https://github.com/MunifTanjim/minimo ignore = dirty minimo主题配置 # 如果要使用某个主题，最好使用该主题的example的配置，再在上面进行修改定制 $ cp themes/minimo/exampleSite/config.toml . # staticman是用来给静态网站增加评论功能的，如果要用评论功能需要配置这个 $ cp themes/minimo/exampleSite/staticman.toml . # 为了省事直接把这两个也先copy过来了 $ cp -r themes/minimo/exampleSite/content . $ cp -r themes/minimo/exampleSite/data . 如果要在上方的菜单栏配置posts/categories/tags，可以在content目录下新建对应文件夹，之后创建一个_index.md的文件，添加下面的内容
+--- date: 2017-09-28T08:00:00&#43;06:00 title: Posts linkTitle: Posts slug: posts menu: main weight: -290 --- 添加百度统计 在head模板的&lt;/head&gt;标签之前放入百度统计生成的&lt;script&gt;.'>
+<meta property='og:url' content='https://xudai3.github.io/posts/hugo-build-blog/'>
 <meta property='og:site_name' content='xudai&#39;s blog'>
 <meta property='og:type' content='article'><meta property='article:section' content='posts'><meta property='article:tag' content='blog'><meta property='article:tag' content='hugo'><meta property='article:published_time' content='2020-10-10T20:36:06&#43;08:00'/><meta property='article:modified_time' content='2020-10-10T20:36:06&#43;08:00'/><meta name='twitter:card' content='summary'>
 
 <meta name="generator" content="Hugo 0.76.3" />
 
   <title>使用hugo搭建blog • xudai&#39;s blog</title>
-  <link rel='canonical' href='https://xudai3.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BAblog/'>
+  <link rel='canonical' href='https://xudai3.github.io/posts/hugo-build-blog/'>
   
   
   <link rel='icon' href='/favicon.ico'>
@@ -128,6 +130,8 @@
         <a href='/about/'>About</a>
       </li><li class='item'>
         <a href='https://github.com/xudai3/xudai3.github.io'>Repo</a>
+      </li><li class='item'>
+        <a href='/archives/'>Archives</a>
       </li></ul>
   </div>
 </nav><div class='header-widgets'>
@@ -170,7 +174,7 @@
 
 </svg>
 <span class='screen-reader-text'>Posted on </span>
-  <time class='entry-date' datetime='2020-10-10T20:36:06&#43;08:00'>2020, Oct 10</time>
+  <time class='entry-date' datetime='2020-10-10T20:36:06&#43;08:00'>2020-10-10</time>
 </span>
 
   
@@ -182,7 +186,7 @@
   <polyline points="12 6 12 12 15 15"/>
 
 </svg>
-One min read
+2 mins read
 </span>
 
 
@@ -207,10 +211,10 @@ One min read
     </li>
     <li><a href="#usage">Usage</a>
       <ul>
-        <li><a href="#create-new-blog">Create New Blog</a></li>
-        <li><a href="#install-theme">Install theme</a></li>
-        <li><a href="#create-new-post">create new post</a></li>
-        <li><a href="#debug">Debug</a></li>
+        <li><a href="#新建项目">新建项目</a></li>
+        <li><a href="#安装主题">安装主题</a></li>
+        <li><a href="#创建文章">创建文章</a></li>
+        <li><a href="#调试">调试</a></li>
         <li><a href="#生成静态网站">生成静态网站</a></li>
         <li><a href="#上传到github-pages">上传到Github Pages</a></li>
       </ul>
@@ -226,16 +230,14 @@ One min read
 <h3 id="macos下安装">MacOS下安装</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew install hugo
 </code></pre></div><h2 id="usage">Usage</h2>
-<h3 id="create-new-blog">Create New Blog</h3>
+<h3 id="新建项目">新建项目</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo new site $your_blog_name
-</code></pre></div><h3 id="install-theme">Install theme</h3>
+</code></pre></div><h3 id="安装主题">安装主题</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd $your_blog_name
 $ git init
 <span style="color:#75715e"># 作为子模块方便管理和更新</span>
 $ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo
-<span style="color:#75715e"># </span>
-
-</code></pre></div><p>如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty</p>
+</code></pre></div><p>如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty，不过hugo只需要在根目录的文件夹创建和主题同路径同名的文件就可以覆盖并生效，所以不需要修改主题的模板文件</p>
 <pre><code>[submodule &quot;themes/minimo&quot;]
     path = themes/minimo
     url = https://github.com/MunifTanjim/minimo
@@ -259,31 +261,62 @@ weight: -290
 ---
 </code></pre></div><h5 id="添加百度统计">添加百度统计</h5>
 <p>在head模板的<code>&lt;/head&gt;</code>标签之前放入百度统计生成的<code>&lt;script&gt;...&lt;/script&gt;</code>代码就行了</p>
-<p>hugo只需要在根目录的文件夹创建和主题同路径同名的文件就可以覆盖并生效，所以不需要修改主题的模板文件</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># minimo主题的head模板文件是这个/themes/minimo/layouts/partials/head/head.html</span>
 $ mkdir -p layouts/partials/head/
 $ cp themes/minimo/layouts/partials/head/head.html layouts/partials/head/head.html
 $ vim layouts/partials/head/head.html
-</code></pre></div><h3 id="create-new-post">create new post</h3>
+</code></pre></div><h3 id="创建文章">创建文章</h3>
 <p>一定要加上.md后缀</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo new posts/first_blog.md
-</code></pre></div><h3 id="debug">Debug</h3>
+</code></pre></div><h3 id="调试">调试</h3>
 <p>可以先在本地进行调试看看效果，执行之后在localhost:1313就可以访问了</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo server -D
 </code></pre></div><h3 id="生成静态网站">生成静态网站</h3>
 <p>执行这条指令之后就会生成一个public文件夹，静态的网站就在这里面</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo -D
 </code></pre></div><h3 id="上传到github-pages">上传到Github Pages</h3>
-<h4 id="create-github-repo">Create GitHub repo</h4>
-<p>先在GitHub上创建两个repo，一个是github pages的，格式必须是xudai3.github.io这样，另外一个随便取名叫blog</p>
-<p>xudai3.github.io仓库用来存放public文件夹下的静态网站，上传之后就可以访问https://xudai3.github.io了</p>
-<p>而blog仓库可以用来存放这整个的hugo文件夹</p>
-<h4 id="upload">Upload</h4>
+<h4 id="新建github仓库">新建GitHub仓库</h4>
+<p>先在GitHub上创建两个repo，一个存放原始hugo项目的，另一个是存放github pages静态网页文件的，repo名字格式必须是xudai3.github.io这样，把public文件夹下的生成的静态网页文件上传之后到这个仓库之后就可以访问https://xudai3.github.io了</p>
+<h4 id="手动上传到github">手动上传到GitHub</h4>
 <p>可以在hugo项目目录下的.gitignore里把public文件夹忽略掉，然后<code>git submodule add -f git@github.com:xudai3/xudai3.github.io.git public</code>把public作为一个git子模块分开管理</p>
 <p>如果之前生成过public文件夹，执行这个之前要先删除掉public文件夹否则执行不了</p>
 <p>还有因为之前被忽略了，要加上-f强制执行才能执行成功</p>
 <p>之后就按照正常的git上传流程就行了</p>
-<h4 id="travis-ci">Travis-ci</h4>
+<h4 id="hugo集成travis-ci">hugo集成Travis CI</h4>
+<p>之前两个仓库分开管理比较麻烦，可以通过Travis CI管理blog项目，检测到更新后自动生成静态网页文件上传到</p>
+<p>xudai3.github.io</p>
+<h5 id="生成github-token">生成GitHub token</h5>
+<p>GitHub-&gt;Settings-&gt;Developer Settings-&gt;Personal access tokens或者直接访问https://github.com/settings/tokens</p>
+<p>然后点击generate new token，勾选<em>public_repo, repo:status, repo_deployment</em>这三个权限就够了</p>
+<h5 id="配置travis-ci">配置travis ci</h5>
+<p>访问https://travis-ci.org/，点击右上角登陆，选择GitHub账号登陆，选择需要监听的GitHub仓库</p>
+<p>选择blog项目之后，点击setting，配置一个环境变量GITHUB_TOKEN，value填刚才生成的GitHub token，之后编写.travis.yml的时候就可以使用这个变量</p>
+<h5 id="编写travisyml">编写.travis.yml</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml"><span style="color:#75715e"># 需要先下载安装hugo</span>
+<span style="color:#f92672">install</span>:
+  - <span style="color:#ae81ff">wget https://github.com/gohugoio/hugo/releases/download/v0.76.3/hugo_0.76.3_Linux-64bit.deb</span>
+  - <span style="color:#ae81ff">sudo dpkg -i hugo*.deb</span>
+  - <span style="color:#ae81ff">hugo version</span>
+
+<span style="color:#f92672">before_script</span>:
+  - <span style="color:#ae81ff">git config --global user.name &#34;xudai3&#34;</span>
+  - <span style="color:#ae81ff">git config --global user.email &#34;xudai3@qq.com&#34;</span>
+
+<span style="color:#75715e"># 指定要执行的脚本</span>
+<span style="color:#f92672">script</span>:
+  - <span style="color:#ae81ff">hugo -D</span>
+  
+<span style="color:#75715e"># 先clone下来清空非隐藏文件，在把新生成的public文件内容复制进去，这样可以保留commit记录</span>
+<span style="color:#f92672">after_success</span>:
+  - <span style="color:#ae81ff">git clone https://${GITHUB_TOKEN}@github.com/xudai3/xudai3.github.io.git container</span>
+  - <span style="color:#ae81ff">rm -rf container/*</span>
+  - <span style="color:#ae81ff">cp -r public/* container</span>
+  - <span style="color:#ae81ff">cd container</span>
+  - <span style="color:#ae81ff">git add .</span>
+  - <span style="color:#ae81ff">git commit -m &#34;Travis update blog&#34;</span>
+  - <span style="color:#ae81ff">git push -u origin master -f</span>
+</code></pre></div><h5 id="上传到blog仓库">上传到blog仓库</h5>
+<p>之后每次push到blog仓库之后就会触发Travis了</p>
 
 </div>
 

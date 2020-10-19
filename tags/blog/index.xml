@@ -8,12 +8,13 @@
     <lastBuildDate>Sat, 10 Oct 2020 20:36:06 +0800</lastBuildDate><atom:link href="https://xudai3.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用hugo搭建blog</title>
-      <link>https://xudai3.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BAblog/</link>
+      <link>https://xudai3.github.io/posts/hugo-build-blog/</link>
       <pubDate>Sat, 10 Oct 2020 20:36:06 +0800</pubDate>
       
-      <guid>https://xudai3.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BAblog/</guid>
-      <description>使用hugo搭建blog Install MacOS下安装 $ brew install hugo Usage Create New Blog $ hugo new site $your_blog_name Install theme $ cd $your_blog_name $ git init # 作为子模块方便管理和更新 $ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo #  如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty
-[submodule &amp;quot;themes/minimo&amp;quot;] path = themes/minimo url = https://github.com/MunifTanjim/minimo ignore = dirty minimo主题配置 # 如果要使用某个主题，最好使用该主题的example的配置，再在上面进行修改定制 $ cp themes/minimo/exampleSite/config.toml . # staticman是用来给静态网站增加评论功能的，如果要用评论功能需要配置这个 $ cp themes/minimo/exampleSite/staticman.toml . # 为了省事直接把这两个也先copy过来了 $ cp -r themes/minimo/exampleSite/content . $ cp -r themes/minimo/exampleSite/data .</description>
+      <guid>https://xudai3.github.io/posts/hugo-build-blog/</guid>
+      <description>使用hugo搭建blog Install MacOS下安装 $ brew install hugo Usage 新建项目 $ hugo new site $your_blog_name 安装主题 $ cd $your_blog_name $ git init # 作为子模块方便管理和更新 $ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo 如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty，不过hugo只需要在根目录的文件夹创建和主题同路径同名的文件就可以覆盖并生效，所以不需要修改主题的模板文件
+[submodule &amp;quot;themes/minimo&amp;quot;] path = themes/minimo url = https://github.com/MunifTanjim/minimo ignore = dirty minimo主题配置 # 如果要使用某个主题，最好使用该主题的example的配置，再在上面进行修改定制 $ cp themes/minimo/exampleSite/config.toml . # staticman是用来给静态网站增加评论功能的，如果要用评论功能需要配置这个 $ cp themes/minimo/exampleSite/staticman.toml . # 为了省事直接把这两个也先copy过来了 $ cp -r themes/minimo/exampleSite/content . $ cp -r themes/minimo/exampleSite/data . 如果要在上方的菜单栏配置posts/categories/tags，可以在content目录下新建对应文件夹，之后创建一个_index.md的文件，添加下面的内容
+--- date: 2017-09-28T08:00:00+06:00 title: Posts linkTitle: Posts slug: posts menu: main weight: -290 --- 添加百度统计 在head模板的&amp;lt;/head&amp;gt;标签之前放入百度统计生成的&amp;lt;script&amp;gt;.</description>
     </item>
     
   </channel>
