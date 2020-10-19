@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang='en' dir='auto'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='使用hugo搭建blog Install MacOS下安装 $ brew install hugo Usage Create New Blog $ hugo new site $your_blog_name Install theme $ cd $your_blog_name $ git init # 作为子模块方便管理和更新 $ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo #  如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty
+[submodule &quot;themes/minimo&quot;] path = themes/minimo url = https://github.com/MunifTanjim/minimo ignore = dirty minimo主题配置 # 如果要使用某个主题，最好使用该主题的example的配置，再在上面进行修改定制 $ cp themes/minimo/exampleSite/config.toml . # staticman是用来给静态网站增加评论功能的，如果要用评论功能需要配置这个 $ cp themes/minimo/exampleSite/staticman.toml . # 为了省事直接把这两个也先copy过来了 $ cp -r themes/minimo/exampleSite/content . $ cp -r themes/minimo/exampleSite/data .'>
+<meta name='theme-color' content='#ffcd00'>
+
+<meta property='og:title' content='使用hugo搭建blog • xudai&#39;s blog'>
+<meta property='og:description' content='使用hugo搭建blog Install MacOS下安装 $ brew install hugo Usage Create New Blog $ hugo new site $your_blog_name Install theme $ cd $your_blog_name $ git init # 作为子模块方便管理和更新 $ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo #  如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty
+[submodule &quot;themes/minimo&quot;] path = themes/minimo url = https://github.com/MunifTanjim/minimo ignore = dirty minimo主题配置 # 如果要使用某个主题，最好使用该主题的example的配置，再在上面进行修改定制 $ cp themes/minimo/exampleSite/config.toml . # staticman是用来给静态网站增加评论功能的，如果要用评论功能需要配置这个 $ cp themes/minimo/exampleSite/staticman.toml . # 为了省事直接把这两个也先copy过来了 $ cp -r themes/minimo/exampleSite/content . $ cp -r themes/minimo/exampleSite/data .'>
+<meta property='og:url' content='https://xudai3.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BAblog/'>
+<meta property='og:site_name' content='xudai&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='posts'><meta property='article:tag' content='blog'><meta property='article:tag' content='hugo'><meta property='article:published_time' content='2020-10-10T20:36:06&#43;08:00'/><meta property='article:modified_time' content='2020-10-10T20:36:06&#43;08:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.76.3" />
+
+  <title>使用hugo搭建blog • xudai&#39;s blog</title>
+  <link rel='canonical' href='https://xudai3.github.io/posts/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BAblog/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.ab98e12b.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#ffcd00;}
+</style>
+
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c533ddd8f3de2039048581d893a1ae8e";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body class='page type-posts has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      xudai&#39;s blog
+      </a>
+    </h2>
+    <div class='desc'>
+    
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-search sep-after'>
+  <header>
+    <h4 class='title widget-title'>Search</h4>
+  </header>
+
+  <form action='/search' id='search-form' class='search-form'>
+    <label>
+      <span class='screen-reader-text'>Search</span>
+      <input id='search-term' class='search-term' type='search' name='q' placeholder='Search&hellip;'>
+    </label></form>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li></ul>
+    </div>
+  </nav>
+
+</section><section class='widget widget-taxonomy_cloud sep-after'>
+  <header>
+    <h4 class='title widget-title'>Tags</h4>
+  </header>
+
+  <div class='container list-container'>
+  <ul class='list taxonomy-cloud no-shuffle'><li>
+        <a href='/tags/blog/' style='font-size:1em'>blog</a>
+      </li><li>
+        <a href='/tags/hugo/' style='font-size:1em'>hugo</a>
+      </li></ul>
+</div>
+
+
+</section>
+</div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><nav id='main-menu' class='menu main-menu' aria-label='Main Menu'>
+  <div class='container'>
+    <a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+
+</svg>
+</span>
+  <span class='close'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+
+</svg>
+</span>
+</button>
+    <ul><li class='item'>
+        <a href='/'>Home</a>
+      </li><li class='item'>
+        <a href='/posts/'>Posts</a>
+      </li><li class='item'>
+        <a href='/categories/'>Categories</a>
+      </li><li class='item'>
+        <a href='/tags/'>Tags</a>
+      </li><li class='item'>
+        <a href='/about/'>About</a>
+      </li><li class='item'>
+        <a href='https://github.com/xudai3/xudai3.github.io'>Repo</a>
+      </li></ul>
+  </div>
+</nav><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><a href='/posts/'>Posts</a></li><li><span>使用hugo搭建blog</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>xudai&#39;s blog</p><p class='desc site-desc'></p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>使用hugo搭建blog</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2020-10-10T20:36:06&#43;08:00'>2020, Oct 10</time>
+</span>
+
+  
+  
+<span class='reading-time'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <circle cx="12" cy="12" r="10"/>
+  <polyline points="12 6 12 12 15 15"/>
+
+</svg>
+One min read
+</span>
+
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+<details class='container entry-toc'>
+  <summary class='title'>
+    <span>Table of Contents</span>
+  </summary>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#install">Install</a>
+      <ul>
+        <li><a href="#macos下安装">MacOS下安装</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#create-new-blog">Create New Blog</a></li>
+        <li><a href="#install-theme">Install theme</a></li>
+        <li><a href="#create-new-post">create new post</a></li>
+        <li><a href="#debug">Debug</a></li>
+        <li><a href="#生成静态网站">生成静态网站</a></li>
+        <li><a href="#上传到github-pages">上传到Github Pages</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</details>
+
+
+  <div class='container entry-content'>
+  <h1 id="使用hugo搭建blog">使用hugo搭建blog</h1>
+<h2 id="install">Install</h2>
+<h3 id="macos下安装">MacOS下安装</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ brew install hugo
+</code></pre></div><h2 id="usage">Usage</h2>
+<h3 id="create-new-blog">Create New Blog</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo new site $your_blog_name
+</code></pre></div><h3 id="install-theme">Install theme</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd $your_blog_name
+$ git init
+<span style="color:#75715e"># 作为子模块方便管理和更新</span>
+$ git submodule add https://github.com/MunifTanjim/minimo.git themes/minimo
+<span style="color:#75715e"># </span>
+
+</code></pre></div><p>如果之后有对主题进行自定义修改，又想忽略掉这个子模块的git变动，可以修改.gitmodule文件，加上ignore = dirty</p>
+<pre><code>[submodule &quot;themes/minimo&quot;]
+    path = themes/minimo
+    url = https://github.com/MunifTanjim/minimo
+    ignore = dirty
+</code></pre><h4 id="minimo主题配置">minimo主题配置</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># 如果要使用某个主题，最好使用该主题的example的配置，再在上面进行修改定制</span>
+$ cp themes/minimo/exampleSite/config.toml .
+<span style="color:#75715e"># staticman是用来给静态网站增加评论功能的，如果要用评论功能需要配置这个</span>
+$ cp themes/minimo/exampleSite/staticman.toml .
+<span style="color:#75715e"># 为了省事直接把这两个也先copy过来了</span>
+$ cp -r themes/minimo/exampleSite/content .
+$ cp -r themes/minimo/exampleSite/data .
+</code></pre></div><p>如果要在上方的菜单栏配置posts/categories/tags，可以在content目录下新建对应文件夹，之后创建一个_index.md的文件，添加下面的内容</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">---
+date: 2017-09-28T08:00:00+06:00
+title: Posts 
+linkTitle: Posts 
+slug: posts
+menu: main
+weight: -290
+---
+</code></pre></div><h5 id="添加百度统计">添加百度统计</h5>
+<p>在head模板的<code>&lt;/head&gt;</code>标签之前放入百度统计生成的<code>&lt;script&gt;...&lt;/script&gt;</code>代码就行了</p>
+<p>hugo只需要在根目录的文件夹创建和主题同路径同名的文件就可以覆盖并生效，所以不需要修改主题的模板文件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># minimo主题的head模板文件是这个/themes/minimo/layouts/partials/head/head.html</span>
+$ mkdir -p layouts/partials/head/
+$ cp themes/minimo/layouts/partials/head/head.html layouts/partials/head/head.html
+$ vim layouts/partials/head/head.html
+</code></pre></div><h3 id="create-new-post">create new post</h3>
+<p>一定要加上.md后缀</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo new posts/first_blog.md
+</code></pre></div><h3 id="debug">Debug</h3>
+<p>可以先在本地进行调试看看效果，执行之后在localhost:1313就可以访问了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo server -D
+</code></pre></div><h3 id="生成静态网站">生成静态网站</h3>
+<p>执行这条指令之后就会生成一个public文件夹，静态的网站就在这里面</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ hugo -D
+</code></pre></div><h3 id="上传到github-pages">上传到Github Pages</h3>
+<h4 id="create-github-repo">create GitHub repo</h4>
+<p>先在GitHub上创建两个repo，一个是github pages的，格式必须是xudai3.github.io这样，另外一个随便取名叫blog</p>
+<p>xudai3.github.io仓库用来存放public文件夹下的静态网站，上传之后就可以访问https://xudai3.github.io了</p>
+<p>而blog仓库可以用来存放这整个的hugo文件夹</p>
+<h4 id="upload">upload</h4>
+<p>可以在hugo项目目录下的.gitignore里把public文件夹忽略掉，然后<code>git submodule add -f git@github.com:xudai3/xudai3.github.io.git public</code>把public作为一个git子模块分开管理</p>
+<p>如果之前生成过public文件夹，执行这个之前要先删除掉public文件夹否则执行不了</p>
+<p>还有因为之前被忽略了，要加上-f强制执行才能执行成功</p>
+<p>之后就按照正常的git上传流程就行了</p>
+
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='categories'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+    <path d="M22,19a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V5A2,2,0,0,1,4,3H9l2,3h9a2,2,0,0,1,2,2Z"/>
+
+</svg>
+<span class='screen-reader-text'>Categories: </span><a class='category' href='/categories/tools/'>tools</a></div>
+<div class='tags'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/blog/'>blog</a>, <a class='tag' href='/tags/hugo/'>hugo</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='https://github.com/xudai3' target='_blank' rel='noopener me'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+
+</svg>
+</a>
+      </li><li>
+        <a href='mailto:xudai3@qq.com' target='_blank' rel='noopener me'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p>Powered by Hugo | Theme is Minimo &copy; 2020 xudai </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.c3bcf2df.js'></script><script src='/js/custom.js'></script>
+
+</body>
+
+</html>
+
