@@ -596,25 +596,6 @@ DIR_LOG <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/v
     build(ctx)
     deploy(ctx)
     restart_feishubot(ctx)
-
-
-<span style="color:#a6e22e">@task</span>
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_fab</span>(ctx):
-    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>host)
-    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>user)
-    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>port)
-    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>config)
-    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>gateway)
-    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>forward_agent)
-    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>connect_timeout)
-    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>connect_kwargs)
-    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>inline_ssh_env)
-    sudo(ctx)
-	  <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>config)
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sudo</span>(ctx):
-    ctx<span style="color:#f92672">.</span>config<span style="color:#f92672">.</span>sudo<span style="color:#f92672">.</span>password <span style="color:#f92672">=</span> sudo_pass
-
 </code></pre></div>
 </div>
 
