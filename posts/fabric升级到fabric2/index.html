@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang='en' dir='auto'><head>
+  <meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta name='description' content='fabric升级到fabric2 fabric2相比于fabric改动很多，并且不能向下兼容
+安装 可以用pip安装fabric的2.X版本，也可以安装fabric2，都是一样的，用fabric2为了区分之前的版本，fabric2改动特别大
+fabric=&gt;fabric2 改动 完整改动还是得看官网文档Upgrading from 1.x，这里只列举部分我常用的
+env 移除了env，使用fabric.Config来进行配置
+env.use_ssh_config不再需要，fabric2默认就会使用ssh_config
+sudo密码 之前用env.password来配置sudo的密码，现在可以用
+方法1 使用全局的connection，并配置config sudo_pass = &#39;xxxxxx&#39; fab_user = &#39;xudai&#39; config = Config(overrides={&#39;sudo&#39;: {&#39;password&#39;: sudo_pass}}) c = Connection(host=&#39;xd&#39;, config=config) @task def sample(ctx): c.sudo(&#39;whoami&#39;) 方法2 执行时修改config @task def sample(ctx): print(ctx.config) sudo(ctx) print(ctx.config) def sudo(ctx): ctx.config.sudo.password = sudo_pass 方法3 给sudo传参 @task def sample(c): c.sudo(&#39;whoami&#39;, password=os.environ.get(&#39;SUDO_PASSWORD&#39;)) 方法4 &ndash;prompt-for-sudo-password 执行时加上这个参数，会让你先在命令行输入一次sudo password
+方法5 配置config文件 run/local/sudo # fabric 1.X from fabric.api import ( local, run, sudo, ) local(&#39;cmd&#39;) run(&#39;cmd&#39;) sudo(&#39;cmd&#39;) # fabric 2.'>
+<meta name='theme-color' content='#ffcd00'>
+
+<meta property='og:title' content='Fabric升级到fabric2 • xudai&#39;s blog'>
+<meta property='og:description' content='fabric升级到fabric2 fabric2相比于fabric改动很多，并且不能向下兼容
+安装 可以用pip安装fabric的2.X版本，也可以安装fabric2，都是一样的，用fabric2为了区分之前的版本，fabric2改动特别大
+fabric=&gt;fabric2 改动 完整改动还是得看官网文档Upgrading from 1.x，这里只列举部分我常用的
+env 移除了env，使用fabric.Config来进行配置
+env.use_ssh_config不再需要，fabric2默认就会使用ssh_config
+sudo密码 之前用env.password来配置sudo的密码，现在可以用
+方法1 使用全局的connection，并配置config sudo_pass = &#39;xxxxxx&#39; fab_user = &#39;xudai&#39; config = Config(overrides={&#39;sudo&#39;: {&#39;password&#39;: sudo_pass}}) c = Connection(host=&#39;xd&#39;, config=config) @task def sample(ctx): c.sudo(&#39;whoami&#39;) 方法2 执行时修改config @task def sample(ctx): print(ctx.config) sudo(ctx) print(ctx.config) def sudo(ctx): ctx.config.sudo.password = sudo_pass 方法3 给sudo传参 @task def sample(c): c.sudo(&#39;whoami&#39;, password=os.environ.get(&#39;SUDO_PASSWORD&#39;)) 方法4 &ndash;prompt-for-sudo-password 执行时加上这个参数，会让你先在命令行输入一次sudo password
+方法5 配置config文件 run/local/sudo # fabric 1.X from fabric.api import ( local, run, sudo, ) local(&#39;cmd&#39;) run(&#39;cmd&#39;) sudo(&#39;cmd&#39;) # fabric 2.'>
+<meta property='og:url' content='https://xudai3.github.io/posts/fabric%E5%8D%87%E7%BA%A7%E5%88%B0fabric2/'>
+<meta property='og:site_name' content='xudai&#39;s blog'>
+<meta property='og:type' content='article'><meta property='article:section' content='posts'><meta property='article:tag' content='python'><meta property='article:tag' content='fabric'><meta property='article:published_time' content='2020-11-23T17:13:18&#43;08:00'/><meta property='article:modified_time' content='2020-11-23T17:13:18&#43;08:00'/><meta name='twitter:card' content='summary'>
+
+<meta name="generator" content="Hugo 0.76.3" />
+
+  <title>Fabric升级到fabric2 • xudai&#39;s blog</title>
+  <link rel='canonical' href='https://xudai3.github.io/posts/fabric%E5%8D%87%E7%BA%A7%E5%88%B0fabric2/'>
+  
+  
+  <link rel='icon' href='/favicon.ico'>
+<link rel='stylesheet' href='/assets/css/main.ab98e12b.css'><link rel='stylesheet' href='/css/custom.css'><style>
+:root{--color-accent:#ffcd00;}
+</style>
+
+  
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c533ddd8f3de2039048581d893a1ae8e";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+</head>
+<body class='page type-posts has-sidebar'>
+
+  <div class='site'><div id='sidebar' class='sidebar'>
+  <a class='screen-reader-text' href='#main-menu'>Skip to Main Menu</a>
+
+  <div class='container'><section class='widget widget-about sep-after'>
+  <header>
+    
+    <h2 class='title site-title '>
+      <a href='/'>
+      xudai&#39;s blog
+      </a>
+    </h2>
+    <div class='desc'>
+    
+    </div>
+  </header>
+
+</section>
+<section class='widget widget-search sep-after'>
+  <header>
+    <h4 class='title widget-title'>Search</h4>
+  </header>
+
+  <form action='/search' id='search-form' class='search-form'>
+    <label>
+      <span class='screen-reader-text'>Search</span>
+      <input id='search-term' class='search-term' type='search' name='q' placeholder='Search&hellip;'>
+    </label></form>
+
+</section>
+<section class='widget widget-sidebar_menu sep-after'><nav id='sidebar-menu' class='menu sidebar-menu' aria-label='Sidebar Menu'>
+    <div class='container'>
+      <ul><li class='item'>
+  <a href='/'>Home</a></li></ul>
+    </div>
+  </nav>
+
+</section><section class='widget widget-taxonomy_cloud sep-after'>
+  <header>
+    <h4 class='title widget-title'>Tags</h4>
+  </header>
+
+  <div class='container list-container'>
+  <ul class='list taxonomy-cloud no-shuffle'><li>
+        <a href='/tags/blog/' style='font-size:1em'>blog</a>
+      </li><li>
+        <a href='/tags/fabric/' style='font-size:1em'>fabric</a>
+      </li><li>
+        <a href='/tags/hugo/' style='font-size:1em'>hugo</a>
+      </li><li>
+        <a href='/tags/python/' style='font-size:1em'>python</a>
+      </li></ul>
+</div>
+
+
+</section>
+</div>
+
+  <div class='sidebar-overlay'></div>
+</div><div class='main'><nav id='main-menu' class='menu main-menu' aria-label='Main Menu'>
+  <div class='container'>
+    <a class='screen-reader-text' href='#content'>Skip to Content</a>
+
+<button id='sidebar-toggler' class='sidebar-toggler' aria-controls='sidebar'>
+  <span class='screen-reader-text'>Toggle Sidebar</span>
+  <span class='open'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <line x1="3" y1="12" x2="21" y2="12" />
+  <line x1="3" y1="6" x2="21" y2="6" />
+  <line x1="3" y1="18" x2="21" y2="18" />
+
+</svg>
+</span>
+  <span class='close'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <line x1="18" y1="6" x2="6" y2="18" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+
+</svg>
+</span>
+</button>
+    <ul><li class='item'>
+        <a href='/'>Home</a>
+      </li><li class='item'>
+        <a href='/posts/'>Posts</a>
+      </li><li class='item'>
+        <a href='/categories/'>Categories</a>
+      </li><li class='item'>
+        <a href='/tags/'>Tags</a>
+      </li><li class='item'>
+        <a href='/about/'>About</a>
+      </li><li class='item'>
+        <a href='https://github.com/xudai3/xudai3.github.io'>Repo</a>
+      </li><li class='item'>
+        <a href='/archives/'>Archives</a>
+      </li></ul>
+  </div>
+</nav><div class='header-widgets'>
+        <div class='container'>
+    
+    <style>.widget-breadcrumbs li:after{content:'\2f '}</style>
+  <section class='widget widget-breadcrumbs sep-after'>
+    <nav id='breadcrumbs'>
+      <ol><li><a href='/'>Home</a></li><li><a href='/posts/'>Posts</a></li><li><span>Fabric升级到fabric2</span></li></ol>
+    </nav>
+  </section></div>
+      </div>
+
+      <header id='header' class='header site-header'>
+        <div class='container sep-after'>
+          <div class='header-info'><p class='site-title title'>xudai&#39;s blog</p><p class='desc site-desc'></p>
+          </div>
+        </div>
+      </header>
+
+      <main id='content'>
+
+
+<article lang='en' class='entry'>
+  <header class='header entry-header'>
+  <div class='container sep-after'>
+    <div class='header-info'>
+      <h1 class='title'>Fabric升级到fabric2</h1>
+      
+
+    </div>
+    <div class='entry-meta'>
+  <span class='posted-on'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+  <line x1="16" y1="2" x2="16" y2="6"/>
+  <line x1="8" y1="2" x2="8" y2="6"/>
+  <line x1="3" y1="10" x2="21" y2="10"/>
+
+</svg>
+<span class='screen-reader-text'>Posted on </span>
+  <time class='entry-date' datetime='2020-11-23T17:13:18&#43;08:00'>2020-11-23</time>
+</span>
+
+  
+  
+<span class='reading-time'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <circle cx="12" cy="12" r="10"/>
+  <polyline points="12 6 12 12 15 15"/>
+
+</svg>
+4 mins read
+</span>
+
+
+</div>
+
+
+  </div>
+</header>
+
+  
+  
+<details class='container entry-toc'>
+  <summary class='title'>
+    <span>Table of Contents</span>
+  </summary>
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#安装">安装</a></li>
+    <li><a href="#fabricfabric2">fabric=&gt;fabric2</a>
+      <ul>
+        <li><a href="#改动">改动</a></li>
+        <li><a href="#fabric-1x的例子">fabric 1.X的例子</a></li>
+        <li><a href="#fabric-2x的例子">fabric 2.X的例子</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+</details>
+
+
+  <div class='container entry-content'>
+  <h1 id="fabric升级到fabric2">fabric升级到fabric2</h1>
+<p>fabric2相比于fabric改动很多，并且不能向下兼容</p>
+<h2 id="安装">安装</h2>
+<p>可以用pip安装fabric的2.X版本，也可以安装fabric2，都是一样的，用fabric2为了区分之前的版本，fabric2改动特别大</p>
+<h2 id="fabricfabric2">fabric=&gt;fabric2</h2>
+<h3 id="改动">改动</h3>
+<p>完整改动还是得看官网文档<a href="http://www.fabfile.org/upgrading.html#">Upgrading from 1.x</a>，这里只列举部分我常用的</p>
+<h4 id="env">env</h4>
+<p>移除了env，使用fabric.Config来进行配置</p>
+<p>env.use_ssh_config不再需要，fabric2默认就会使用ssh_config</p>
+<h4 id="sudo密码">sudo密码</h4>
+<p>之前用env.password来配置sudo的密码，现在可以用</p>
+<h5 id="方法1-使用全局的connection并配置config">方法1 使用全局的connection，并配置config</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sudo_pass <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;xxxxxx&#39;</span>
+fab_user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;xudai&#39;</span>
+config <span style="color:#f92672">=</span> Config(overrides<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;sudo&#39;</span>: {<span style="color:#e6db74">&#39;password&#39;</span>: sudo_pass}})
+c <span style="color:#f92672">=</span> Connection(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;xd&#39;</span>, config<span style="color:#f92672">=</span>config)
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sample</span>(ctx):
+  c<span style="color:#f92672">.</span>sudo(<span style="color:#e6db74">&#39;whoami&#39;</span>)
+</code></pre></div><h5 id="方法2-执行时修改config">方法2 执行时修改config</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sample</span>(ctx):
+    <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>config)
+    sudo(ctx)
+	  <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>config)
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sudo</span>(ctx):
+    ctx<span style="color:#f92672">.</span>config<span style="color:#f92672">.</span>sudo<span style="color:#f92672">.</span>password <span style="color:#f92672">=</span> sudo_pass
+</code></pre></div><h5 id="方法3-给sudo传参">方法3 给sudo传参</h5>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a6e22e">@task</span>
+ <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sample</span>(c):
+    c<span style="color:#f92672">.</span>sudo(<span style="color:#e6db74">&#39;whoami&#39;</span>, password<span style="color:#f92672">=</span>os<span style="color:#f92672">.</span>environ<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;SUDO_PASSWORD&#39;</span>))
+</code></pre></div><h5 id="方法4---prompt-for-sudo-password">方法4 &ndash;prompt-for-sudo-password</h5>
+<p>执行时加上这个参数，会让你先在命令行输入一次sudo password</p>
+<h5 id="方法5-配置config文件">方法5 配置config文件</h5>
+<h4 id="runlocalsudo">run/local/sudo</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># fabric 1.X</span>
+<span style="color:#f92672">from</span> fabric.api <span style="color:#f92672">import</span> (
+    local,
+    run,
+    sudo,
+)
+
+local(<span style="color:#e6db74">&#39;cmd&#39;</span>)
+run(<span style="color:#e6db74">&#39;cmd&#39;</span>)
+sudo(<span style="color:#e6db74">&#39;cmd&#39;</span>)
+
+<span style="color:#75715e"># fabric 2.X</span>
+<span style="color:#f92672">from</span> fabric.connection <span style="color:#f92672">import</span> Connection
+
+c <span style="color:#f92672">=</span> Connection(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;xd&#39;</span>)
+c<span style="color:#f92672">.</span>local(<span style="color:#e6db74">&#39;cmd&#39;</span>)
+c<span style="color:#f92672">.</span>run(<span style="color:#e6db74">&#39;cmd&#39;</span>)
+c<span style="color:#f92672">.</span>sudo(<span style="color:#e6db74">&#39;cmd&#39;</span>)
+</code></pre></div><h4 id="fabriccontrib">fabric.contrib</h4>
+<p>fabric.contrib也移除了，现在用patchwork，可以用pip安装</p>
+<h5 id="filesexists">files.exists</h5>
+<p>需要传connection参数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># fabric 1.X</span>
+<span style="color:#f92672">from</span> fabric.contrib <span style="color:#f92672">import</span> files
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_dir</span>():
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(DIR_FEISHUBOT):
+        create_dir(DIR_FEISHUBOT)
+        
+<span style="color:#75715e"># fabric 2.X</span>
+<span style="color:#f92672">from</span> patchwork <span style="color:#f92672">import</span> files
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_dir</span>(ctx):
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(c, DIR_FEISHUBOT):
+        create_dir(ctx, DIR_FEISHUBOT)
+</code></pre></div><h5 id="rsync">rsync</h5>
+<p>参数名字有点不同，并且需要传connection参数</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># fabric 1.X</span>
+<span style="color:#f92672">from</span> fabric.contrib.project <span style="color:#f92672">import</span> rsync_project
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy_bin</span>():
+    rsync_project(remote_dir<span style="color:#f92672">=</span>REMOTE_BIN,
+                  local_dir<span style="color:#f92672">=</span>LOCAL_BIN,
+                  exclude<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;.git&#39;</span>, <span style="color:#e6db74">&#39;*.pyc&#39;</span>, <span style="color:#e6db74">&#39;__pycache__&#39;</span>, <span style="color:#e6db74">&#39;.vscode&#39;</span>, <span style="color:#e6db74">&#39;.idea&#39;</span>, <span style="color:#e6db74">&#39;*.xls&#39;</span>, <span style="color:#e6db74">&#39;.DS_Store&#39;</span>],
+                  ssh_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-i ~/.ssh/id_rsa&#39;</span>)
+    
+<span style="color:#75715e"># fabric 2.X</span>
+<span style="color:#f92672">from</span> patchwork.transfers <span style="color:#f92672">import</span> rsync
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy_bin</span>(ctx):
+    rsync(c,
+          target<span style="color:#f92672">=</span>REMOTE_BIN,
+          source<span style="color:#f92672">=</span>LOCAL_BIN,
+          exclude<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;.git&#39;</span>, <span style="color:#e6db74">&#39;*.pyc&#39;</span>, <span style="color:#e6db74">&#39;__pycache__&#39;</span>, <span style="color:#e6db74">&#39;.vscode&#39;</span>, <span style="color:#e6db74">&#39;.idea&#39;</span>, <span style="color:#e6db74">&#39;*.xls&#39;</span>, <span style="color:#e6db74">&#39;.DS_Store&#39;</span>],
+          rsync_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-O&#39;</span>,
+          ssh_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-i ~/.ssh/id_rsa&#39;</span>)
+</code></pre></div><h4 id="task">task</h4>
+<p>之前fabric只需要fabfile定义一个函数就可以被识别成fab任务，现在fabric2必须要给函数加上task装饰器才会被识别成fab任务，并且必须有一个connection参数，通常用c/ctx就行</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> fabric <span style="color:#f92672">import</span> task
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">sample</span>(ctx):
+  <span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>config)
+</code></pre></div><p>如果task函数名字带有_，使用的时候要用-，用<code>fab --list</code>可以看到</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">test_sample</span>(ctx):
+	<span style="color:#66d9ef">print</span>(ctx<span style="color:#f92672">.</span>config)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ fab test-sample
+</code></pre></div><h4 id="fabric2必须指定shell">fabric2必须指定shell</h4>
+<p>如果用的不是bash，例如zsh，执行的指令前面需要加上<code>/bin/zsh -c</code>指定shell，否则即使当前用的zsh，执行的时候还是会用bash，一些zshrc配置的东西就找不到</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># fabric 1.X</span>
+COMMAND_BUILD_FEISHUBOT <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;GOOS=linux GOARCH=amd64 go build -o bin/feishubot -v main.go&#39;</span>
+<span style="color:#75715e"># fabric 2.X</span>
+COMMAND_BUILD_FEISHUBOT <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/bin/zsh -c &#34;GOOS=linux GOARCH=amd64 /usr/local/go/bin/go build -o bin/feishubot -v main.go&#34;&#39;</span>
+</code></pre></div><h4 id="命令行参数">命令行参数</h4>
+<p>之前传参用:，现在用GNU/POSIX-style long and short flags</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># fabric 1.X</span>
+$ fab deploy:arg1,arg2
+<span style="color:#75715e"># fabric 2.X</span>
+<span style="color:#75715e"># def deploy(ctx, prefix, postfix)</span>
+$ fab deploy --prefix<span style="color:#f92672">=</span>arg1 --postfix<span style="color:#f92672">=</span>arg2
+<span style="color:#75715e"># 可以用首字母p就行，而且即使有多个参数都是p开头的，会按顺序读取</span>
+$ fab deploy --p<span style="color:#f92672">=</span>arg1 --p<span style="color:#f92672">=</span>arg2
+</code></pre></div><h4 id="命令行指定服务器">命令行指定服务器</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e"># fabric 1.X</span>
+<span style="color:#75715e"># 之前通过定义一个set_svr(svr)的函数接收服务器名然后设置env.host</span>
+$ fab set_svr:xj deploy
+<span style="color:#75715e"># fabric 2.X</span>
+<span style="color:#75715e"># 现在可以直接用-H来指定ssh_config配置的服务器</span>
+$ fab -H xj deploy
+</code></pre></div><h3 id="fabric-1x的例子">fabric 1.X的例子</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env/python</span>
+<span style="color:#75715e"># -*-coding:utf-8 -*-</span>
+<span style="color:#f92672">from</span> os <span style="color:#f92672">import</span> getenv
+<span style="color:#f92672">from</span> fabric.api <span style="color:#f92672">import</span> (
+    local,
+    env,
+    run,
+    sudo,
+)
+<span style="color:#f92672">from</span> fabric.contrib.project <span style="color:#f92672">import</span> rsync_project
+<span style="color:#f92672">from</span> fabric.contrib <span style="color:#f92672">import</span> files
+
+env<span style="color:#f92672">.</span>use_ssh_config <span style="color:#f92672">=</span> True
+
+LOCAL_BIN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;bin/&#39;</span>
+LOCAL_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;conf/feishubot.yaml&#39;</span>
+LOCAL_SUPERVISOR_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;conf/feishubot.conf&#39;</span>
+
+REMOTE_BIN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/data/qa/feishubot/bin&#39;</span>
+REMOTE_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/data/qa/feishubot/conf/feishubot.yaml&#39;</span>
+TEMP_SUPERVISOR_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/data/qa/feishubot/feishubot.conf&#39;</span>
+REMOTE_SUPERVISOR_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/etc/supervisor/conf.d/&#39;</span>
+
+COMMAND_BUILD_FEISHUBOT <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;GOOS=linux GOARCH=amd64 go build -o bin/feishubot -v main.go&#39;</span>
+
+DIR_FEISHUBOT <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/data/qa/feishubot&#39;</span>
+DIR_BIN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/data/qa/feishubot/bin&#39;</span>
+DIR_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/data/qa/feishubot/conf&#39;</span>
+DIR_LOG <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/data/qa/log/feishubot&#39;</span>
+
+env<span style="color:#f92672">.</span>hosts <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;xj&#39;</span>
+env<span style="color:#f92672">.</span>gateway <span style="color:#f92672">=</span> getenv(<span style="color:#e6db74">&#34;USER&#34;</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;@xj.tiaoban.badam.mobi&#39;</span>
+env<span style="color:#f92672">.</span>password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;xxxxxx&#39;</span>  <span style="color:#75715e"># 配置password执行sudo就不用输入密码了</span>
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_remote_dir</span>():
+    <span style="color:#66d9ef">return</span> REMOTE_BIN
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_dir</span>(path):
+    run(<span style="color:#e6db74">&#39;mkdir </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> path)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_dir</span>():
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(DIR_FEISHUBOT):
+        create_dir(DIR_FEISHUBOT)
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(DIR_BIN):
+        create_dir(DIR_BIN)
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(DIR_CONF):
+        create_dir(DIR_CONF)
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(DIR_LOG):
+        create_dir(DIR_LOG)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy</span>():
+    deploy_bin()
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy_bin</span>():
+    rsync_project(remote_dir<span style="color:#f92672">=</span>REMOTE_BIN,
+                  local_dir<span style="color:#f92672">=</span>LOCAL_BIN,
+                  exclude<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;.git&#39;</span>, <span style="color:#e6db74">&#39;*.pyc&#39;</span>, <span style="color:#e6db74">&#39;__pycache__&#39;</span>, <span style="color:#e6db74">&#39;.vscode&#39;</span>, <span style="color:#e6db74">&#39;.idea&#39;</span>, <span style="color:#e6db74">&#39;*.xls&#39;</span>, <span style="color:#e6db74">&#39;.DS_Store&#39;</span>],
+                  ssh_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-i ~/.ssh/id_rsa&#39;</span>)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy_conf</span>():
+    rsync_project(remote_dir<span style="color:#f92672">=</span>REMOTE_CONF,
+                  local_dir<span style="color:#f92672">=</span>LOCAL_CONF,
+                  exclude<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;.git&#39;</span>, <span style="color:#e6db74">&#39;*.pyc&#39;</span>, <span style="color:#e6db74">&#39;__pycache__&#39;</span>, <span style="color:#e6db74">&#39;.vscode&#39;</span>, <span style="color:#e6db74">&#39;.idea&#39;</span>, <span style="color:#e6db74">&#39;*.xls&#39;</span>, <span style="color:#e6db74">&#39;.DS_Store&#39;</span>],
+                  ssh_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-i ~/.ssh/id_rsa&#39;</span>)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy_supervisor</span>():
+    rsync_project(remote_dir<span style="color:#f92672">=</span>TEMP_SUPERVISOR_CONF,
+                  local_dir<span style="color:#f92672">=</span>LOCAL_SUPERVISOR_CONF,
+                  exclude<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;.git&#39;</span>, <span style="color:#e6db74">&#39;*.pyc&#39;</span>, <span style="color:#e6db74">&#39;__pycache__&#39;</span>, <span style="color:#e6db74">&#39;.vscode&#39;</span>, <span style="color:#e6db74">&#39;.idea&#39;</span>, <span style="color:#e6db74">&#39;*.xls&#39;</span>, <span style="color:#e6db74">&#39;.DS_Store&#39;</span>],
+                  ssh_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-i ~/.ssh/id_rsa&#39;</span>)
+    sudo(<span style="color:#e6db74">&#39;mv </span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> (TEMP_SUPERVISOR_CONF, REMOTE_SUPERVISOR_CONF))
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">restart_feishubot</span>():
+    sudo(<span style="color:#e6db74">&#39;supervisorctl restart feishubot&#39;</span>)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">build_feishubot</span>():
+    local(COMMAND_BUILD_FEISHUBOT)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_supervisor</span>():
+    sudo(<span style="color:#e6db74">&#39;supervisorctl update&#39;</span>)
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init</span>():
+    build_feishubot()
+    init_dir()
+    deploy()
+    deploy_conf()
+    deploy_supervisor()
+    update_supervisor()
+
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">feishu</span>():
+    build_feishubot()
+    deploy()
+    deploy_conf()
+    restart_feishubot()
+</code></pre></div><h3 id="fabric-2x的例子">fabric 2.X的例子</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env/python</span>
+<span style="color:#75715e"># -*-coding:utf-8 -*-</span>
+
+<span style="color:#f92672">from</span> fabric <span style="color:#f92672">import</span> task, Config
+<span style="color:#f92672">from</span> fabric.connection <span style="color:#f92672">import</span> Connection
+<span style="color:#f92672">from</span> patchwork <span style="color:#f92672">import</span> files
+<span style="color:#f92672">from</span> patchwork.transfers <span style="color:#f92672">import</span> rsync
+
+sudo_pass <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;xxxxxx&#39;</span>
+fab_user <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;xudai&#39;</span>
+config <span style="color:#f92672">=</span> Config(overrides<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;sudo&#39;</span>: {<span style="color:#e6db74">&#39;password&#39;</span>: sudo_pass}})
+c <span style="color:#f92672">=</span> Connection(host<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;xd&#39;</span>, config<span style="color:#f92672">=</span>config)
+
+LOCAL_BIN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;bin/&#39;</span>
+LOCAL_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;conf/feishubot.yaml&#39;</span>
+LOCAL_SUPERVISOR_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;conf/feishubot.conf&#39;</span>
+
+REMOTE_BIN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/usr/share/feishubot/bin&#39;</span>
+REMOTE_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/usr/share/feishubot/conf/feishubot.yaml&#39;</span>
+TEMP_SUPERVISOR_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/usr/share/feishubot/feishubot.conf&#39;</span>
+REMOTE_SUPERVISOR_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/etc/supervisor/conf.d/&#39;</span>
+
+COMMAND_BUILD_FEISHUBOT <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/bin/zsh -c &#34;GOOS=linux GOARCH=amd64 /usr/local/go/bin/go build -o bin/feishubot -v main.go&#34;&#39;</span>
+
+DIR_FEISHUBOT <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/usr/share/feishubot&#39;</span>
+DIR_BIN <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/usr/share/feishubot/bin&#39;</span>
+DIR_CONF <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/usr/share/feishubot/conf&#39;</span>
+DIR_LOG <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;/var/log/feishubot&#39;</span>
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_dir</span>(ctx, path):
+    <span style="color:#75715e"># need root permission</span>
+    c<span style="color:#f92672">.</span>sudo(<span style="color:#e6db74">&#39;mkdir </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> path)
+    <span style="color:#75715e"># The rsync command should be done by the same user as the folder owner&#39;s one</span>
+    c<span style="color:#f92672">.</span>sudo(<span style="color:#e6db74">&#39;chown -R </span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> (fab_user, path))
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init_dir</span>(ctx):
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(c, DIR_FEISHUBOT):
+        create_dir(ctx, DIR_FEISHUBOT)
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(c, DIR_BIN):
+        create_dir(ctx, DIR_BIN)
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(c, DIR_CONF):
+        create_dir(ctx, DIR_CONF)
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> files<span style="color:#f92672">.</span>exists(c, DIR_LOG):
+        create_dir(ctx, DIR_LOG)
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy</span>(ctx):
+    deploy_bin(ctx)
+    deploy_conf(ctx)
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy_bin</span>(ctx):
+    rsync(c,
+          target<span style="color:#f92672">=</span>REMOTE_BIN,
+          source<span style="color:#f92672">=</span>LOCAL_BIN,
+          exclude<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;.git&#39;</span>, <span style="color:#e6db74">&#39;*.pyc&#39;</span>, <span style="color:#e6db74">&#39;__pycache__&#39;</span>, <span style="color:#e6db74">&#39;.vscode&#39;</span>, <span style="color:#e6db74">&#39;.idea&#39;</span>, <span style="color:#e6db74">&#39;*.xls&#39;</span>, <span style="color:#e6db74">&#39;.DS_Store&#39;</span>],
+          rsync_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-O&#39;</span>,
+          ssh_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-i ~/.ssh/id_rsa&#39;</span>)
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy_conf</span>(ctx):
+    rsync(c,
+          target<span style="color:#f92672">=</span>REMOTE_CONF,
+          source<span style="color:#f92672">=</span>LOCAL_CONF,
+          exclude<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;.git&#39;</span>, <span style="color:#e6db74">&#39;*.pyc&#39;</span>, <span style="color:#e6db74">&#39;__pycache__&#39;</span>, <span style="color:#e6db74">&#39;.vscode&#39;</span>, <span style="color:#e6db74">&#39;.idea&#39;</span>, <span style="color:#e6db74">&#39;*.xls&#39;</span>, <span style="color:#e6db74">&#39;.DS_Store&#39;</span>],
+          rsync_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-O&#39;</span>,
+          ssh_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-i ~/.ssh/id_rsa&#39;</span>)
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">deploy_supervisor</span>(ctx):
+    rsync(c,
+          target<span style="color:#f92672">=</span>TEMP_SUPERVISOR_CONF,
+          source<span style="color:#f92672">=</span>LOCAL_SUPERVISOR_CONF,
+          exclude<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;.git&#39;</span>, <span style="color:#e6db74">&#39;*.pyc&#39;</span>, <span style="color:#e6db74">&#39;__pycache__&#39;</span>, <span style="color:#e6db74">&#39;.vscode&#39;</span>, <span style="color:#e6db74">&#39;.idea&#39;</span>, <span style="color:#e6db74">&#39;*.xls&#39;</span>, <span style="color:#e6db74">&#39;.DS_Store&#39;</span>],
+          rsync_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-O&#39;</span>,
+          ssh_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-i ~/.ssh/id_rsa&#39;</span>)
+    c<span style="color:#f92672">.</span>sudo(<span style="color:#e6db74">&#39;mv </span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> (TEMP_SUPERVISOR_CONF, REMOTE_SUPERVISOR_CONF))
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">restart_feishubot</span>(ctx):
+    c<span style="color:#f92672">.</span>sudo(<span style="color:#e6db74">&#39;supervisorctl restart feishubot&#39;</span>)
+
+    
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">build</span>(ctx):
+    c<span style="color:#f92672">.</span>local(COMMAND_BUILD_FEISHUBOT)
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">update_supervisor</span>(ctx):
+    c<span style="color:#f92672">.</span>sudo(<span style="color:#e6db74">&#39;supervisorctl update&#39;</span>)
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">init</span>(ctx):
+    build(ctx)
+    init_dir(ctx)
+    deploy(ctx)
+    deploy_conf(ctx)
+    deploy_supervisor(ctx)
+    update_supervisor(ctx)
+
+
+<span style="color:#a6e22e">@task</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">feishu</span>(ctx):
+    build(ctx)
+    deploy(ctx)
+    restart_feishubot(ctx)
+</code></pre></div>
+</div>
+
+  
+<footer class='entry-footer'>
+  <div class='container sep-before'><div class='categories'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+    <path d="M22,19a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V5A2,2,0,0,1,4,3H9l2,3h9a2,2,0,0,1,2,2Z"/>
+
+</svg>
+<span class='screen-reader-text'>Categories: </span><a class='category' href='/categories/python/'>python</a></div>
+<div class='tags'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <path d="M20.59,13.41l-7.17,7.17a2,2,0,0,1-2.83,0L2,12V2H12l8.59,8.59A2,2,0,0,1,20.59,13.41Z"/>
+  <line x1="7" y1="7" x2="7" y2="7"/>
+
+</svg>
+<span class='screen-reader-text'>Tags: </span><a class='tag' href='/tags/python/'>python</a>, <a class='tag' href='/tags/fabric/'>fabric</a></div>
+
+  </div>
+</footer>
+
+
+</article>
+
+<nav class='entry-nav'>
+  <div class='container'><div class='prev-entry sep-before'>
+      <a href='/posts/hugo-build-blog/'>
+        <span aria-hidden='true'><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+  <line x1="20" y1="12" x2="4" y2="12"/>
+  <polyline points="10 18 4 12 10 6"/>
+
+</svg>
+ Previous</span>
+        <span class='screen-reader-text'>Previous post: </span>使用hugo搭建blog</a>
+    </div></div>
+</nav>
+
+
+
+
+      </main>
+
+      <footer id='footer' class='footer'>
+        <div class='container sep-before'><section class='widget widget-social_menu sep-after'><nav aria-label='Social Menu'>
+    <ul><li>
+        <a href='https://github.com/xudai3' target='_blank' rel='noopener me'>
+          <span class='screen-reader-text'>Open Github account in new tab</span><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    
+      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+
+</svg>
+</a>
+      </li><li>
+        <a href='mailto:xudai3@qq.com' target='_blank' rel='noopener me'>
+          <span class='screen-reader-text'>Contact via Email</span><svg class='icon' xmlns='http://www.w3.org/2000/svg' viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
+</svg>
+</a>
+      </li></ul>
+  </nav>
+</section><div class='copyright'>
+  <p>Powered by Hugo | Theme is Minimo &copy; 2020 xudai </p>
+</div>
+
+        </div>
+      </footer>
+
+    </div>
+  </div><script>window.__assets_js_src="/assets/js/"</script>
+
+<script src='/assets/js/main.c3bcf2df.js'></script><script src='/js/custom.js'></script>
+
+</body>
+
+</html>
+
