@@ -326,6 +326,33 @@ c<span style="color:#f92672">.</span>sudo(<span style="color:#e6db74">&#39;cmd&#
           exclude<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;.git&#39;</span>, <span style="color:#e6db74">&#39;*.pyc&#39;</span>, <span style="color:#e6db74">&#39;__pycache__&#39;</span>, <span style="color:#e6db74">&#39;.vscode&#39;</span>, <span style="color:#e6db74">&#39;.idea&#39;</span>, <span style="color:#e6db74">&#39;*.xls&#39;</span>, <span style="color:#e6db74">&#39;.DS_Store&#39;</span>],
           rsync_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-O&#39;</span>,
           ssh_opts<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;-i ~/.ssh/id_rsa&#39;</span>)
+</code></pre></div><p>如果是像需要通过跳板机才能连接的host，通过看rsync的代码，是通过connection的host来设定ssh options的，这个host获取到的是不能直连的host地址，所以直接rsync连接不了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">    <span style="color:#75715e"># Remote shell (SSH) options</span>
+  	user, host, port <span style="color:#f92672">=</span> c<span style="color:#f92672">.</span>user, c<span style="color:#f92672">.</span>host, c<span style="color:#f92672">.</span>port
+    port_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;-p {}&#34;</span><span style="color:#f92672">.</span>format(port)
+    <span style="color:#f92672">...</span>
+    rsh_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+    rsh_parts <span style="color:#f92672">=</span> [key_string, port_string, ssh_opts]
+    <span style="color:#66d9ef">if</span> any(rsh_parts):
+        rsh_string <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;--rsh=&#39;ssh {}&#39;&#34;</span><span style="color:#f92672">.</span>format(<span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">.</span>join(rsh_parts))
+</code></pre></div><p>一般都配置了有ssh config，rsync的connection里host填这个host2是可以连接的</p>
+<pre><code>Host host2
+    HostName host1
+    User ubuntu
+    ProxyJump jump
+</code></pre><p>而这个host2对于fabric是无法使用的，fabric用的是host1和gateway，可以封装一个函数，rsync执行之前先将host改成host2，之后再换回去host1，这种方法比较笨不过能用</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">svr_name_ip_map <span style="color:#f92672">=</span> {
+    <span style="color:#e6db74">&#39;test&#39;</span>: HOST_TEST,
+}
+
+svr_ip_name_map <span style="color:#f92672">=</span> {
+    HOST_TEST: <span style="color:#e6db74">&#39;test&#39;</span>,
+}
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">rsync_with_ssh_config</span>(ctx, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+    ctx<span style="color:#f92672">.</span>host <span style="color:#f92672">=</span> svr_ip_name_map[ctx<span style="color:#f92672">.</span>host]
+    rsync(c, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs)
+    ctx<span style="color:#f92672">.</span>host <span style="color:#f92672">=</span> svr_name_ip_map[ctx<span style="color:#f92672">.</span>host]
 </code></pre></div><h4 id="task">task</h4>
 <p>之前fabric只需要fabfile定义一个函数就可以被识别成fab任务，现在fabric2必须要给函数加上task装饰器才会被识别成fab任务，并且必须有一个connection参数，通常用c/ctx就行</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> fabric <span style="color:#f92672">import</span> task
